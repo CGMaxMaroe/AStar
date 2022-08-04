@@ -129,7 +129,7 @@ public:
         openSet.push(start);
         openSetList.push_back(start);
 
-        // Reset nodes to infinity (in case you want to call FindPath twice...
+        // Reset nodes to infinity (in case you want to call FindPath twice...)
         Node::ResetNodeScores();
 
         // Remember, all scores are infinity at first, so we have to set the scores to 0 for our starting node
