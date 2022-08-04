@@ -9,7 +9,10 @@
 class Node
 {
 public:
+    // Our node's name (for output)
     std::string name;
+
+    // Each node tracks fScore, gScore, and cameFrom, instead of separate maps
     float fScore = std::numeric_limits<float>::infinity();
     float gScore = std::numeric_limits<float>::infinity();
     Node* cameFrom;
