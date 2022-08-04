@@ -9,9 +9,18 @@
 class Node
 {
 public:
+    std::string name;
+    float fScore = std::numeric_limits<float>::infinity();
+    float gScore = std::numeric_limits<float>::infinity();
+    Node* cameFrom;
+
     Node(std::string nodeName)
     {
+        // We need a name for proper output
         name = nodeName;
+
+        // We add all nodes to this static vector to make ResetNodeScores easy
+        allNodes.push_back(this);
     }
 
     void AddConnection(Node* connectedNode, int cost, bool isOneWay = false)
@@ -38,6 +47,16 @@ public:
     {
         return connectedNodeList;
     }
+
+    // Resets all node scores to infinity so we can pathfind more than once
+    static void ResetNodeScores()
+    {
+        for(Node* node : Node::allNodes)
+        {
+            node->gScore = std::numeric_limits<float>::infinity();
+            node->fScore = std::numeric_limits<float>::infinity();
+        }
+    }
     
     // We need this comparitor for our priority_queue to "just work"
     // For some reason though, it's not "just working" in fact it's not being called at all...
@@ -50,15 +69,16 @@ public:
         return this->fScore > nodeToCompare.fScore;
     }
 
-    std::string name;
-    float fScore = std::numeric_limits<float>::infinity();
-    float gScore = std::numeric_limits<float>::infinity();
-    Node* cameFrom;
-
 private:
 	std::map<Node*,float> connectedNodes;
     std::vector<Node*> connectedNodeList;
+
+    // Stores all nodes for easy reset
+    static std::vector<Node*> allNodes;
 };
+
+// Need this for static vector to work...
+std::vector<Node*> Node::allNodes;
 
 struct NodeComparer
 {
@@ -102,6 +122,9 @@ public:
         openSet.push(start);
         openSetList.push_back(start);
 
+        // Reset nodes to infinity (in case you want to call FindPath twice...
+        Node::ResetNodeScores();
+
         // Remember, all scores are infinity at first, so we have to set the scores to 0 for our starting node
         start->gScore = 0;
         start->fScore = 0; // Note: plug in heuristic here if you have one (can't do on non-spatial graph)
@@ -125,9 +148,11 @@ public:
 
             for (Node* neighbor : current->GetConnectedNodeList())
             {
+                // Calculate the tentative score for neighbor
                 float tentative_gScore = current->gScore + current->GetConnectedNodes()[neighbor];
                 if (tentative_gScore < neighbor->gScore)
                 {
+                    // New low score! We set the cameFrom pointer to current and officially set the scores for this new best path to neighbor
                     neighbor->cameFrom = current;
                     neighbor->gScore = tentative_gScore;
                     neighbor->fScore = tentative_gScore + 0; // Insert neighbor heuristic here
