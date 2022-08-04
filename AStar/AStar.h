@@ -85,7 +85,7 @@ std::vector<Node*> Node::allNodes;
 
 struct NodeComparer
 {
-    bool operator () (const Node* lhs, const Node* rhs)
+    bool operator() (const Node* lhs, const Node* rhs)
     {
         // Priority queue sorts high score first, we need low score so note the >
         return lhs->fScore > rhs->fScore;
