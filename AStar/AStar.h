@@ -97,7 +97,8 @@ public:
     static std::vector<Node*> FindPath(Node* const start, Node* const goal)
     {
         std::priority_queue<Node*,std::vector<Node*>,NodeComparer> openSet;
-        std::list<Node*> openSetList; // Because you can't check for presence of an element in a c++ priority_queue
+        std::list<Node*> openSetList; // We keep a separate list of nodes because you can't check for presence of an element in a c++ priority_queue
+
         openSet.push(start);
         openSetList.push_back(start);
 
@@ -108,14 +109,20 @@ public:
         while (!openSet.empty())
         {
             Node* current;
+
+            // Top usually returns the highest value in the priority_queue; in this case it's the lowest value though because we reverse our operator<
+            // (In other words, the priority_queue *thinks* the lowest value Node is the highest value Node because that's what they return)
             current = openSet.top();
             if (current == goal)
             {
                 return reconstruct_path(current);
             }
 
+            // Pop only removes the element, it doesn't return it
+            // We remove from the associate list too
             openSet.pop();
             openSetList.remove(current);
+
             for (Node* neighbor : current->GetConnectedNodeList())
             {
                 float tentative_gScore = current->gScore + current->GetConnectedNodes()[neighbor];
