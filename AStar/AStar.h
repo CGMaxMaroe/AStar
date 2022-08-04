@@ -24,6 +24,12 @@ public:
         allNodes.push_back(this);
     }
 
+    ~Node()
+    {
+        // If someone deletes a node, we need to remove the node from our list or ResetNodeScores will crash
+        allNodes.remove(this);
+    }
+
     void AddConnection(Node* connectedNode, int cost, bool isOneWay = false)
     {
         // We add the new node to the map of connected (neighbor) nodes
@@ -75,11 +81,11 @@ private:
     std::vector<Node*> connectedNodeList;
 
     // Stores all nodes for easy reset
-    static std::vector<Node*> allNodes;
+    static std::list<Node*> allNodes;
 };
 
 // Need this for static vector to work...
-std::vector<Node*> Node::allNodes;
+std::list <Node*> Node::allNodes;
 
 struct NodeComparer
 {
