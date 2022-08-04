@@ -119,7 +119,7 @@ public:
             }
 
             // Pop only removes the element, it doesn't return it
-            // We remove from the associate list too
+            // We remove from the associated list too
             openSet.pop();
             openSetList.remove(current);
 
