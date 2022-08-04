@@ -30,7 +30,7 @@ public:
         allNodes.remove(this);
     }
 
-    void AddConnection(Node* connectedNode, int cost, bool isOneWay = false)
+    void AddConnection(Node* const connectedNode, int cost, bool isOneWay = false)
     {
         // We add the new node to the map of connected (neighbor) nodes
         connectedNodes.insert({ connectedNode, cost });
