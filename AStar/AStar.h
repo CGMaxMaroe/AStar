@@ -1,10 +1,8 @@
 #pragma once
-#include <iostream>
-#include <list>
-#include <map>
-#include <algorithm>
-#include <queue>
 #include <string>
+#include <list>
+#include <queue>
+#include <map>
 
 class Node
 {
