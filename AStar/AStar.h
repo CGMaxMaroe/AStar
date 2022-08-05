@@ -78,14 +78,14 @@ public:
     }
 
 private:
-	std::map<Node*,float> connectedNodes;
+    std::map<Node*,float> connectedNodes;
     std::vector<Node*> connectedNodeList;
 
     // Stores all nodes for easy reset
     static std::list<Node*> allNodes;
 };
 
-// Need this for static vector to work...
+// Need this for static list to work...
 std::list <Node*> Node::allNodes;
 
 struct NodeComparer
